@@ -1,0 +1,19 @@
+<html>
+
+<body>
+    <form onSubmit="listNameSubmit()">
+        Change to this list: <input type="text" id="listNameInputChanged" oninput="nameInputChanged()" />
+        <input type="submit">
+    </form>
+    Showing list <span id="listName"></span>
+    <form onSubmit="addItemSubmit()">
+        Item to add <input type="text" id="itemInput" oninput="addItemInputChanged()" />
+        <input type="submit">
+    </form>
+    
+    <ul id="items"></ul>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
