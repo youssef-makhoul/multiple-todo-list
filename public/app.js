@@ -68,7 +68,7 @@ function sendItemToServer(it, ln) {
         let parsedItems = JSON.parse(itemsFromServer)
         setState({ items: parsedItems })
     }
-    setState({ addItemInput: '' });
+
     makeHTTPRequest('POST',
         '/addItem',
         JSON.stringify({ item: it, listName: ln }),
@@ -84,7 +84,7 @@ function addItemSubmit() {
 
 function listNameSubmit() {
     event.preventDefault();
-    setState({listName: state.listNameInput, listNameInput: '' });
+    setState({listName: state.listNameInput });
 }
 
 // When the client starts he needs to populate the list of items
