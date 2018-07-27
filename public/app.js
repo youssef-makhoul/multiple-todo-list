@@ -23,7 +23,7 @@ function makeHTTPRequest(meth, url, body, cb) {
 
 // We're going to try and stick with React's way of doing things
 let state = {
-    items: [],
+    items: {},
     addItemInput: "", // The contents of the add item input box
     listNameInput: "", // The contents of the input box related to changing the list
     listName: "grocery list"
