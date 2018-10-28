@@ -7,19 +7,23 @@ app.use(bodyParser.raw({ type: '*/*' }))
 
 
 // The following two endpoints are so that the browser can load the HTML and Javascript
-app.get('/', (req, res) => res.send(fs.readFileSync('./public/index.html').toString()))
-app.get('/app.js', (req, res) => res.send(fs.readFileSync('./public/app.js').toString()))
+app.get('/', function (req, res) {
+    res.send(fs.readFileSync('./public/index.html').toString())
+})
+app.get('/app.js', function (req, res) {
+    res.send(fs.readFileSync('./public/app.js').toString())
+})
 
 // 
 let serverState = {
     items: {}
 }
 
-app.post('/items', (req, res) => {
+app.post('/items', function (req, res) {
     res.send(JSON.stringify(serverState.items));
 })
 
-app.post('/addItem', (req, res) => {
+app.post('/addItem', function (req, res) {
     // Remember: the body of an HTTP response is just a string.
     // You need to convert it to a javascript object
     let parsedBody = JSON.parse(req.body.toString())
@@ -33,4 +37,4 @@ app.post('/addItem', (req, res) => {
     res.send(JSON.stringify(serverState.items));
 })
 
-app.listen(4000, () => console.log('Example app listening on port 4000!'))
+app.listen(4000, function () { console.log('Example app listening on port 4000!') })

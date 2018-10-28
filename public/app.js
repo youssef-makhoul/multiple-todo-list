@@ -16,9 +16,13 @@ function makeHTTPRequest(meth, url, body, cb) {
     fetch(url, {
         body: body,
         method: meth
+    }).then(function (response) {
+        return response.text()
+    }).then(function (responseBody) {
+        if (cb) {
+            return cb(responseBody)
+        }
     })
-        .then(response => response.text())
-        .then(responseBody => cb ? cb(responseBody) : undefined)
 }
 
 // We're going to try and stick with React's way of doing things
@@ -45,7 +49,7 @@ function rerender() {
     let d = document.getElementById("items");
     d.innerHTML = '';
     if (state.items[state.listName]) {
-        state.items[state.listName].forEach(item => {
+        state.items[state.listName].forEach(function (item) {
             let li = document.createElement("li");
             li.innerText = item;
             d.appendChild(li)
@@ -64,7 +68,7 @@ function setState(newState) {
 
 function sendItemToServer(it, ln) {
     // This function is so short it could be inlined
-    let cb = (itemsFromServer) => {
+    let cb = function (itemsFromServer) {
         let parsedItems = JSON.parse(itemsFromServer)
         setState({ items: parsedItems })
     }
@@ -84,12 +88,12 @@ function addItemSubmit() {
 
 function listNameSubmit() {
     event.preventDefault();
-    setState({listName: state.listNameInput });
+    setState({ listName: state.listNameInput });
 }
 
 // When the client starts he needs to populate the list of items
 function populateItems() {
-    let cb = itemsString => {
+    let cb = function (itemsString) {
         let itemsParsed = JSON.parse(itemsString)
         setState({ items: itemsParsed })
     }
