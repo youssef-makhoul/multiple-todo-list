@@ -83,6 +83,16 @@ app.post('/getItemslastlist', function (req, res) {
     res.send(JSON.stringify(JSON.stringify(serverState.items)));
 })
 
+
+
+app.post('/Importitems', function (req, res) {
+    let parsedBody = JSON.parse(req.body.toString());
+    let sourceList = parsedBody.source;
+    let targetList = parsedBody.target;
+    serverState.items[targetList] = serverState.items[targetList].concat(serverState.items[sourceList]);
+    res.send(JSON.stringify(serverState.items));
+})
+
 app.listen(4000, function () {
     console.log('Example app listening on port 4000!')
 })

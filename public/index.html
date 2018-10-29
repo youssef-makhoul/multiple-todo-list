@@ -4,13 +4,13 @@
     <div>
         <span id='loading'></span>
         <div id='body'>
-            <div>
+            <div id='form1'>
                 <form onSubmit="listNameSubmit()">
                     Change to this list: <input type="text" id="listNameInputChanged" oninput="nameInputChanged()" />
                     <input type="submit">
                 </form>
             </div>
-            <div>
+            <div id='form2'>
                 Showing list <b id="listName"></b>
                 <form onSubmit="addItemSubmit()">
                     Item to add <input type="text" id="itemInput" oninput="addItemInputChanged()" />
@@ -21,6 +21,12 @@
                     <button onclick="reverseItemsInList()">reverse items</button>
                 </div>
                 <ul id="items"></ul>
+            </div>
+            <div id=form3>
+                <form onSubmit="importItemsFromListToCurrent()">
+                    Import Items From List: <input type="text" id="ImportListName" oninput="ImportListNameInputChanged()" />
+                    <input type="submit">
+                </form>
             </div>
         </div>
     </div>

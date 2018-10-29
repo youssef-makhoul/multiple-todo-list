@@ -14,6 +14,12 @@ function nameInputChanged() {
     });
 }
 
+function ImportListNameInputChanged() {
+    setState({
+        importListName: event.target.value
+    });
+}
+
 // Don't try to understand the body of this function. You just 
 // need to understand what each parameter represents
 // function makeHTTPRequest(meth, url, body, cb) {
@@ -35,7 +41,8 @@ let state = {
     addItemInput: "", // The contents of the add item input box
     listNameInput: "", // The contents of the input box related to changing the list
     listName: "sample-list",
-    loaded: false
+    loaded: false,
+    importListName: ""
 }
 
 // Calling rerender changes the UI to reflect what's in the state
@@ -55,6 +62,9 @@ function rerender() {
 
     let lne = document.getElementById('listNameInputChanged');
     lne.value = state.listNameInput; // you can ignore this line
+
+    let imlne = document.getElementById('ImportListName');
+    imlne.value = state.importListName; // you can ignore this line
 
 
     let listNameElement = document.getElementById('listName')
@@ -78,6 +88,7 @@ function setState(newState) {
     if (newState.listNameInput !== undefined) state.listNameInput = newState.listNameInput;
     if (newState.listName !== undefined) state.listName = newState.listName;
     if (newState.loaded !== undefined) state.loaded = newState.loaded;
+    if (newState.importListName !== undefined) state.importListName = newState.importListName;
     rerender();
 }
 
@@ -116,6 +127,19 @@ function listNameSubmit() {
             listNameInput: ''
         });
     });
+}
+
+function importItemsFromListToCurrent(){
+    event.preventDefault();
+    fetch('/Importitems', {
+        method: 'POST',
+        body: JSON.stringify({
+            source: state.importListName,
+            target: state.listName
+        })
+    }).then(function (response) {
+        return response.text()
+    }).then(updateItems);
 }
 
 function sendItemToServer(it, ln) {
