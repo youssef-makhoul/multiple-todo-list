@@ -34,7 +34,7 @@ let state = {
     items: {},
     addItemInput: "", // The contents of the add item input box
     listNameInput: "", // The contents of the input box related to changing the list
-    listName: "grocery list"
+    listName: "sample-list"
 }
 
 // Calling rerender changes the UI to reflect what's in the state
@@ -90,9 +90,19 @@ function addItemSubmit() {
 
 function listNameSubmit() {
     event.preventDefault();
-    setState({
-        listName: state.listNameInput,
-        listNameInput: ''
+
+    fetch('/getItemslastlist', {
+        method: 'POST',
+        body: JSON.stringify({
+            listName: state.listNameInput
+        })
+    }).then(function (response) {
+        return response.text()
+    }).then(function () {
+        setState({
+            listName: state.listNameInput,
+            listNameInput: ''
+        });
     });
 }
 
@@ -111,6 +121,15 @@ function sendItemToServer(it, ln) {
 
 // When the client starts he needs to populate the list of items
 function populateItems() {
+    fetch('/getItemslastlist').then(function (response) {
+        return response.text()
+    }).then(function (body) {
+        let obj = JSON.parse(body);
+        setState({
+            listName: obj.listName
+        });
+    });
+
     fetch('/items', {
         method: 'POST'
     }).then(function (response) {
@@ -119,7 +138,7 @@ function populateItems() {
     //makeHTTPRequest('POST', '/items', undefined, updateItems)
 }
 
-function deleteItemsInList(){
+function deleteItemsInList() {
     fetch('/deletelistitems', {
         method: 'POST',
         body: JSON.stringify({
@@ -130,7 +149,7 @@ function deleteItemsInList(){
     }).then(updateItems);
 }
 
-function reverseItemsInList(){
+function reverseItemsInList() {
     fetch('/reverselistitems', {
         method: 'POST',
         body: JSON.stringify({

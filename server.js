@@ -18,7 +18,8 @@ app.get('/app.js', function (req, res) {
 
 // 
 let serverState = {
-    items: {}
+    items: {},
+    lastUsedList: undefined
 }
 
 app.post('/items', function (req, res) {
@@ -38,6 +39,7 @@ app.post('/addItem', function (req, res) {
     // The following could be rewritten in a shorter way using push.
     // Try rewriting it. It will help you understand it better.
     serverState.items[listName] = serverState.items[listName].concat(parsedBody.item)
+    serverState.lastUsedList = listName;
     res.send(JSON.stringify(serverState.items));
 })
 
@@ -47,7 +49,8 @@ app.post('/deletelistitems', function (req, res) {
     if (!serverState.items[listName])
         res.send(JSON.stringify(serverState.items));
     else {
-        serverState.items[listName]=[];
+        serverState.items[listName] = [];
+        serverState.lastUsedList = listName;
         res.send(JSON.stringify(serverState.items));
     }
 })
@@ -58,9 +61,25 @@ app.post('/reverselistitems', function (req, res) {
     if (!serverState.items[listName])
         res.send(JSON.stringify(serverState.items));
     else {
-        serverState.items[listName]=serverState.items[listName].reverse();
+        serverState.items[listName] = serverState.items[listName].reverse();
+        serverState.lastUsedList = listName;
         res.send(JSON.stringify(serverState.items));
     }
+})
+
+
+app.get('/getItemslastlist', function (req, res) {
+    let listName = serverState.lastUsedList;
+    res.send(JSON.stringify({
+        listName: listName
+    }));
+})
+
+app.post('/getItemslastlist', function (req, res) {
+    let parsedBody = JSON.parse(req.body.toString());
+    let listName = parsedBody.listName;
+    serverState.lastUsedList = listName;
+    res.send(JSON.stringify(JSON.stringify(serverState.items)));
 })
 
 app.listen(4000, function () {
