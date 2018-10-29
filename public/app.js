@@ -2,28 +2,32 @@
 
 // Controlled input. This is similar to what you did in react.
 function addItemInputChanged() {
-    setState({ addItemInput: event.target.value });
+    setState({
+        addItemInput: event.target.value
+    });
 }
 
 // Controlled input. This is similar to what you did in react.
 function nameInputChanged() {
-    setState({ listNameInput: event.target.value });
+    setState({
+        listNameInput: event.target.value
+    });
 }
 
 // Don't try to understand the body of this function. You just 
 // need to understand what each parameter represents
-function makeHTTPRequest(meth, url, body, cb) {
-    fetch(url, {
-        body: body,
-        method: meth
-    }).then(function (response) {
-        return response.text()
-    }).then(function (responseBody) {
-        if (cb) {
-            return cb(responseBody)
-        }
-    })
-}
+// function makeHTTPRequest(meth, url, body, cb) {
+//     fetch(url, {
+//         body: body,
+//         method: meth
+//     }).then(function (response) {
+//         return response.text()
+//     }).then(function (responseBody) {
+//         if (cb) {
+//             return cb(responseBody)
+//         }
+//     })
+// }
 
 // We're going to try and stick with React's way of doing things
 let state = {
@@ -66,39 +70,53 @@ function setState(newState) {
     rerender();
 }
 
-function sendItemToServer(it, ln) {
-    // This function is so short it could be inlined
-    let cb = function (itemsFromServer) {
-        let parsedItems = JSON.parse(itemsFromServer)
-        setState({ items: parsedItems })
-    }
-
-    makeHTTPRequest('POST',
-        '/addItem',
-        JSON.stringify({ item: it, listName: ln }),
-        cb)
+function updateItems(itemsString) {
+    let itemsParsed = JSON.parse(itemsString)
+    setState({
+        items: itemsParsed
+    })
 }
+
+
 
 // When you submit the form, it sends the item to the server
 function addItemSubmit() {
     event.preventDefault();
-
     sendItemToServer(state.addItemInput, state.listName)
+    setState({
+        addItemInput: ''
+    });
 }
 
 function listNameSubmit() {
     event.preventDefault();
-    setState({ listName: state.listNameInput });
+    setState({
+        listName: state.listNameInput,
+        listNameInput: ''
+    });
+}
+
+function sendItemToServer(it, ln) {
+    fetch('/addItem', {
+        method: 'POST',
+        body: JSON.stringify({
+            item: it,
+            listName: ln
+        })
+    }).then(function (response) {
+        return response.text()
+    }).then(updateItems);
+    //makeHTTPRequest('POST','/addItem',JSON.stringify({item: it,listName: ln}),updateItems)    
 }
 
 // When the client starts he needs to populate the list of items
 function populateItems() {
-    let cb = function (itemsString) {
-        let itemsParsed = JSON.parse(itemsString)
-        setState({ items: itemsParsed })
-    }
-
-    makeHTTPRequest('POST', '/items', undefined, cb)
+    fetch('/items', {
+        method: 'POST'
+    }).then(function (response) {
+        return response.text()
+    }).then(updateItems);
+    //makeHTTPRequest('POST', '/items', undefined, updateItems)
 }
 
 // We define a function and then call it right away. I did this to give the file a nice structure.
