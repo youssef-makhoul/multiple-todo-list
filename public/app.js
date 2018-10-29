@@ -128,13 +128,14 @@ function populateItems() {
         setState({
             listName: obj.listName
         });
+        updateItems(JSON.stringify(obj.items));
     });
 
-    fetch('/items', {
-        method: 'POST'
-    }).then(function (response) {
-        return response.text()
-    }).then(updateItems);
+    // fetch('/items', {
+    //     method: 'POST'
+    // }).then(function (response) {
+    //     return response.text()
+    // }).then(updateItems);
     //makeHTTPRequest('POST', '/items', undefined, updateItems)
 }
 

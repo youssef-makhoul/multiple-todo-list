@@ -71,7 +71,8 @@ app.post('/reverselistitems', function (req, res) {
 app.get('/getItemslastlist', function (req, res) {
     let listName = serverState.lastUsedList;
     res.send(JSON.stringify({
-        listName: listName
+        listName: listName,
+        items:serverState.items
     }));
 })
 
