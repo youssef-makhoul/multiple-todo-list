@@ -34,12 +34,22 @@ let state = {
     items: {},
     addItemInput: "", // The contents of the add item input box
     listNameInput: "", // The contents of the input box related to changing the list
-    listName: "sample-list"
+    listName: "sample-list",
+    loaded: false
 }
 
 // Calling rerender changes the UI to reflect what's in the state
 
 function rerender() {
+    let loadingElement = document.getElementById('loading');
+    let bodyElement = document.getElementById("body");
+    if (!state.loaded) {
+        bodyElement.style.display = "none";
+        loadingElement.innerHTML = '<h1>Loading...</h1>';
+        return;
+    }
+    bodyElement.style.display = "block";
+    loadingElement.innerText = '';
     let inputElement = document.getElementById('itemInput');
     inputElement.value = state.addItemInput; // you can ignore this line
 
@@ -67,13 +77,15 @@ function setState(newState) {
     if (newState.addItemInput !== undefined) state.addItemInput = newState.addItemInput;
     if (newState.listNameInput !== undefined) state.listNameInput = newState.listNameInput;
     if (newState.listName !== undefined) state.listName = newState.listName;
+    if (newState.loaded !== undefined) state.loaded = newState.loaded;
     rerender();
 }
 
 function updateItems(itemsString) {
     let itemsParsed = JSON.parse(itemsString)
     setState({
-        items: itemsParsed
+        items: itemsParsed,
+        loaded: true
     })
 }
 
@@ -130,7 +142,6 @@ function populateItems() {
         });
         updateItems(JSON.stringify(obj.items));
     });
-
     // fetch('/items', {
     //     method: 'POST'
     // }).then(function (response) {
@@ -160,8 +171,6 @@ function reverseItemsInList() {
         return response.text()
     }).then(updateItems);
 }
-
-
 
 // We define a function and then call it right away. I did this to give the file a nice structure.
 populateItems();

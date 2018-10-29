@@ -2,22 +2,27 @@
 
 <body>
     <div>
-        <form onSubmit="listNameSubmit()">
-            Change to this list: <input type="text" id="listNameInputChanged" oninput="nameInputChanged()" />
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        Showing list <b id="listName"></b>
-        <form onSubmit="addItemSubmit()">
-            Item to add <input type="text" id="itemInput" oninput="addItemInputChanged()" />
-            <input type="submit">
-        </form>
-        <div>
-            <button onclick="deleteItemsInList()">clear items</button>
-            <button onclick="reverseItemsInList()">reverse items</button>
+        <span id='loading'></span>
+        <div id='body'>
+            <div>
+                <form onSubmit="listNameSubmit()">
+                    Change to this list: <input type="text" id="listNameInputChanged" oninput="nameInputChanged()" />
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                Showing list <b id="listName"></b>
+                <form onSubmit="addItemSubmit()">
+                    Item to add <input type="text" id="itemInput" oninput="addItemInputChanged()" />
+                    <input type="submit">
+                </form>
+                <div>
+                    <button onclick="deleteItemsInList()">clear items</button>
+                    <button onclick="reverseItemsInList()">reverse items</button>
+                </div>
+                <ul id="items"></ul>
+            </div>
         </div>
-        <ul id="items"></ul>
     </div>
 
     <script src="app.js"></script>
