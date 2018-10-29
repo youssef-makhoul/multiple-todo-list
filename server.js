@@ -52,6 +52,17 @@ app.post('/deletelistitems', function (req, res) {
     }
 })
 
+app.post('/reverselistitems', function (req, res) {
+    let parsedBody = JSON.parse(req.body.toString())
+    let listName = parsedBody.listName;
+    if (!serverState.items[listName])
+        res.send(JSON.stringify(serverState.items));
+    else {
+        serverState.items[listName]=serverState.items[listName].reverse();
+        res.send(JSON.stringify(serverState.items));
+    }
+})
+
 app.listen(4000, function () {
     console.log('Example app listening on port 4000!')
 })
