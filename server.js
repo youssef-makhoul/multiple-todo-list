@@ -3,7 +3,9 @@ const app = express()
 const fs = require('fs')
 const bodyParser = require('body-parser')
 
-app.use(bodyParser.raw({ type: '*/*' }))
+app.use(bodyParser.raw({
+    type: '*/*'
+}))
 
 
 // The following two endpoints are so that the browser can load the HTML and Javascript
@@ -30,11 +32,26 @@ app.post('/addItem', function (req, res) {
     // This is just a convenience to save some typing later on
     let listName = parsedBody.listName;
     // If the list doesn't exist, create it
-    if (!serverState.items[listName]) { serverState.items[listName] = [] }
+    if (!serverState.items[listName]) {
+        serverState.items[listName] = []
+    }
     // The following could be rewritten in a shorter way using push.
     // Try rewriting it. It will help you understand it better.
     serverState.items[listName] = serverState.items[listName].concat(parsedBody.item)
     res.send(JSON.stringify(serverState.items));
 })
 
-app.listen(4000, function () { console.log('Example app listening on port 4000!') })
+app.post('/deletelistitems', function (req, res) {
+    let parsedBody = JSON.parse(req.body.toString())
+    let listName = parsedBody.listName;
+    if (!serverState.items[listName])
+        res.send(JSON.stringify(serverState.items));
+    else {
+        serverState.items[listName]=[];
+        res.send(JSON.stringify(serverState.items));
+    }
+})
+
+app.listen(4000, function () {
+    console.log('Example app listening on port 4000!')
+})

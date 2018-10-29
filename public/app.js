@@ -119,6 +119,17 @@ function populateItems() {
     //makeHTTPRequest('POST', '/items', undefined, updateItems)
 }
 
+function deleteItemsInList(){
+    fetch('/deletelistitems', {
+        method: 'POST',
+        body: JSON.stringify({
+            listName: state.listName
+        })
+    }).then(function (response) {
+        return response.text()
+    }).then(updateItems);
+}
+
 // We define a function and then call it right away. I did this to give the file a nice structure.
 populateItems();
 rerender();
