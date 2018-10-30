@@ -129,7 +129,7 @@ function listNameSubmit() {
     });
 }
 
-function importItemsFromListToCurrent(){
+function importItemsFromListToCurrent() {
     event.preventDefault();
     fetch('/Importitems', {
         method: 'POST',
@@ -157,15 +157,17 @@ function sendItemToServer(it, ln) {
 
 // When the client starts he needs to populate the list of items
 function populateItems() {
-    fetch('/getItemslastlist').then(function (response) {
-        return response.text()
-    }).then(function (body) {
-        let obj = JSON.parse(body);
-        setState({
-            listName: obj.listName
+    fetch('/getItemslastlist')
+        .then(function (response) {
+            return response.text()
+        })
+        .then(function (body) {
+            let obj = JSON.parse(body);
+            setState({
+                listName: obj.listName
+            });
+            updateItems(JSON.stringify(obj.items));
         });
-        updateItems(JSON.stringify(obj.items));
-    });
     // fetch('/items', {
     //     method: 'POST'
     // }).then(function (response) {
